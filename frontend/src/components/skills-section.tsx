@@ -2,17 +2,35 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useInView } from "@/hooks/use-in-view";
 import { Keyboard, Server, Layout, Database, Wrench, Lightbulb, type LucideIcon } from "lucide-react";
 
-const skillGroups: { label: string; icon: LucideIcon; color: string; barFrom: string; barTo: string; glow: string; skills: { name: string; level: number }[] }[] = [
+/** Bidirectional InView — true while intersecting, false when fully out of view */
+function useSectionInView(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, inView };
+}
+
+const skillGroups: {
+  label: string; icon: LucideIcon; color: string;
+  skills: { name: string; level: number }[];
+}[] = [
   {
     label: "Languages",
     icon: Keyboard,
     color: "text-amber-400",
-    barFrom: "#f59e0b",
-    barTo: "#ef4444",
-    glow: "rgba(245,158,11,0.7)",
     skills: [
       { name: "JavaScript", level: 90 },
       { name: "TypeScript", level: 85 },
@@ -26,9 +44,6 @@ const skillGroups: { label: string; icon: LucideIcon; color: string; barFrom: st
     label: "Backend",
     icon: Server,
     color: "text-violet-400",
-    barFrom: "#7c3aed",
-    barTo: "#6366f1",
-    glow: "rgba(124,58,237,0.7)",
     skills: [
       { name: "Node.js", level: 88 },
       { name: "Express.js", level: 85 },
@@ -42,9 +57,6 @@ const skillGroups: { label: string; icon: LucideIcon; color: string; barFrom: st
     label: "Frontend",
     icon: Layout,
     color: "text-blue-400",
-    barFrom: "#2563eb",
-    barTo: "#0891b2",
-    glow: "rgba(37,99,235,0.7)",
     skills: [
       { name: "React", level: 85 },
       { name: "Next.js", level: 82 },
@@ -58,9 +70,6 @@ const skillGroups: { label: string; icon: LucideIcon; color: string; barFrom: st
     label: "Databases",
     icon: Database,
     color: "text-emerald-400",
-    barFrom: "#059669",
-    barTo: "#0d9488",
-    glow: "rgba(5,150,105,0.7)",
     skills: [
       { name: "MongoDB", level: 82 },
       { name: "PostgreSQL", level: 78 },
@@ -74,9 +83,6 @@ const skillGroups: { label: string; icon: LucideIcon; color: string; barFrom: st
     label: "DevOps & Tools",
     icon: Wrench,
     color: "text-cyan-400",
-    barFrom: "#0891b2",
-    barTo: "#6366f1",
-    glow: "rgba(8,145,178,0.7)",
     skills: [
       { name: "Git / GitHub", level: 90 },
       { name: "Docker", level: 70 },
@@ -90,9 +96,6 @@ const skillGroups: { label: string; icon: LucideIcon; color: string; barFrom: st
     label: "Concepts",
     icon: Lightbulb,
     color: "text-pink-400",
-    barFrom: "#db2777",
-    barTo: "#e11d48",
-    glow: "rgba(219,39,119,0.7)",
     skills: [
       { name: "DSA", level: 85 },
       { name: "System Design", level: 72 },
@@ -104,102 +107,31 @@ const skillGroups: { label: string; icon: LucideIcon; color: string; barFrom: st
   },
 ];
 
-function useCountUp(target: number, active: boolean, delay: number, duration = 900) {
-  const [count, setCount] = useState(0);
-  const raf = useRef<number | null>(null);
-  const started = useRef(false);
-
-  useEffect(() => {
-    if (!active || started.current) return;
-    started.current = true;
-    const timeout = setTimeout(() => {
-      const start = performance.now();
-      const tick = (now: number) => {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        // ease out cubic
-        const eased = 1 - Math.pow(1 - progress, 3);
-        setCount(Math.round(eased * target));
-        if (progress < 1) raf.current = requestAnimationFrame(tick);
-      };
-      raf.current = requestAnimationFrame(tick);
-    }, delay * 1000);
-    return () => {
-      clearTimeout(timeout);
-      if (raf.current) cancelAnimationFrame(raf.current);
-    };
-  }, [active, target, delay, duration]);
-
-  return count;
-}
-
 function SkillBar({
-  name, level, inView, delay, barFrom, barTo, glow,
+  name, level, inView, delay,
 }: {
   name: string; level: number; inView: boolean; delay: number;
-  barFrom: string; barTo: string; glow: string;
 }) {
-  const count = useCountUp(level, inView, delay);
-
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
         <span className="text-sm text-foreground/80">{name}</span>
-        <motion.span
-          className="text-xs font-mono font-semibold tabular-nums"
-          style={{ color: barFrom }}
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: delay + 0.1 }}
-        >
-          {count}%
-        </motion.span>
+        <span className="text-xs font-mono text-muted-foreground">{level}%</span>
       </div>
-
-      {/* Track */}
-      <div className="relative h-2 w-full rounded-full bg-white/5 overflow-visible">
-        {/* Filled bar */}
+      <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
         <motion.div
-          className="absolute top-0 left-0 h-full rounded-full"
-          style={{
-            background: `linear-gradient(90deg, ${barFrom}, ${barTo})`,
-            boxShadow: `0 0 8px 0px ${glow}`,
-          }}
+          className="h-full rounded-full bg-gradient-to-r from-violet-600 to-blue-500"
           initial={{ width: 0 }}
-          animate={inView ? { width: `${level}%` } : { width: 0 }}
-          transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {/* Shimmer sweep */}
-          <motion.div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%)",
-              backgroundSize: "200% 100%",
-            }}
-            initial={{ backgroundPosition: "-200% 0" }}
-            animate={inView ? { backgroundPosition: "200% 0" } : {}}
-            transition={{ duration: 0.9, delay: delay + 0.05, ease: "easeOut" }}
-          />
-          {/* Glowing tip dot */}
-          <motion.div
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full"
-            style={{
-              background: barTo,
-              boxShadow: `0 0 10px 3px ${glow}`,
-              transform: "translateX(50%) translateY(-50%)",
-            }}
-            initial={{ scale: 0, opacity: 0 }}
-            animate={inView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-            transition={{ duration: 0.3, delay: delay + 0.85 }}
-          />
-        </motion.div>
+          animate={{ width: inView ? `${level}%` : 0 }}
+          transition={{ duration: 0.8, delay: inView ? delay : 0, ease: "easeOut" }}
+        />
       </div>
     </div>
   );
 }
 
 export function SkillsSection() {
-  const { ref, inView } = useInView(0.1);
+  const { ref, inView } = useSectionInView(0.15);
 
   return (
     <section id="skills" className="py-24 relative">
@@ -247,10 +179,7 @@ export function SkillsSection() {
                     name={skill.name}
                     level={skill.level}
                     inView={inView}
-                    delay={gi * 0.08 + si * 0.07}
-                    barFrom={group.barFrom}
-                    barTo={group.barTo}
-                    glow={group.glow}
+                    delay={gi * 0.08 + si * 0.05}
                   />
                 ))}
               </div>
