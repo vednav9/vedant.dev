@@ -2,21 +2,30 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/use-in-view";
-import { useStats } from "@/hooks/use-stats";
 import { MapPin, ExternalLink, Calendar } from "lucide-react";
 
 export function ExperienceSection() {
   const { ref, inView } = useInView(0.1);
-  const { github, leetcode } = useStats();
-
-  const ghRepos = github.data?.repos   ?? 31;
-  const lcTotal = leetcode.data?.total ?? 265;
-  const lcEasy  = leetcode.data?.easy  ?? 83;
-  const lcMed   = leetcode.data?.medium ?? 140;
-  const lcHard  = leetcode.data?.hard  ?? 42;
-  const lcRank  = leetcode.data?.rank  ?? 525037;
 
   const experiences = [
+    {
+      company: "Fyregig",
+      role: "Software Engineer Intern",
+      duration: "June 2025 — Present",
+      location: "Remote",
+      type: "Internship",
+      url: "https://fyregig.com",
+      description:
+        "Building production full-stack features at Fyregig — a platform connecting freelancers and clients. Owning both backend services and frontend UI end-to-end in a fast-paced remote environment.",
+      achievements: [
+        "Built full-stack features by developing backend services with Node.js and Express.js and implementing React.js components to consume APIs and render dynamic application data",
+        "Designed and integrated REST APIs with frontend views, implementing data flows, media handling with Cloudflare R2 and Stream, and state updates across the full stack",
+        "Improved end-to-end reliability by handling frontend error states, validations, and backend error handling to ensure a stable user experience in production",
+      ],
+      tech: ["Node.js", "Express.js", "React.js", "REST APIs", "Cloudflare R2", "Cloudflare Stream", "JavaScript"],
+      color: "from-emerald-500 to-cyan-500",
+      dotColor: "bg-emerald-500",
+    },
     {
       company: "Nibodh Technologies",
       role: "Software Engineering Intern",
@@ -25,7 +34,7 @@ export function ExperienceSection() {
       type: "Internship",
       url: "https://github.com/vednav9",
       description:
-        "Completed a comprehensive software engineering internship, building multiple real-world projects spanning web development, backend APIs, and full-stack applications.",
+        "Completed a software engineering internship building multiple real-world projects across web development, backend APIs, and full-stack applications.",
       achievements: [
         "Built 8+ production-ready projects covering Node.js, HTML/CSS, REST APIs, and full-stack development",
         "Implemented URL encode/decode service, portfolio site, and interactive web components from scratch",
@@ -35,26 +44,6 @@ export function ExperienceSection() {
       tech: ["Node.js", "JavaScript", "HTML", "CSS", "REST APIs", "Git"],
       color: "from-violet-600 to-blue-500",
       dotColor: "bg-violet-500",
-    },
-    {
-      company: "Personal Projects & Open Source",
-      role: "Independent Builder",
-      duration: "2023 — Present",
-      location: "Remote",
-      type: "Self-Directed",
-      url: "https://github.com/vednav9",
-      description:
-        "Continuously shipping full-stack and backend projects, exploring new technologies, and contributing to open-source. Built products across mobile, web, and backend domains.",
-      achievements: [
-        "Built Cortexa — a production Flutter/Dart app with live deployment at cortexa-beta.vercel.app",
-        "Shipped VitaFlow — a healthcare-focused full-stack application",
-        "Built EduConnect — an educational platform connecting students and educators",
-        `Maintained ${ghRepos}+ public repositories demonstrating breadth of technical skills`,
-        `Solved ${lcTotal}+ LeetCode problems (${lcEasy} Easy, ${lcMed} Medium, ${lcHard} Hard) — ranked #${lcRank.toLocaleString()} globally`,
-      ],
-      tech: ["React", "Next.js", "TypeScript", "Node.js", "Flutter", "Dart", "MongoDB", "PostgreSQL", "Tailwind CSS"],
-      color: "from-blue-500 to-cyan-400",
-      dotColor: "bg-blue-500",
     },
   ];
 
