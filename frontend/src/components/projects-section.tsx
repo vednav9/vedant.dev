@@ -1,32 +1,47 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/use-in-view";
 import { useStats } from "@/hooks/use-stats";
-import { Github, ExternalLink, Star, Code, Brain, MapPin, Sparkles, Globe, Smartphone, MessageCircle, type LucideIcon } from "lucide-react";
+import {
+  Github, ExternalLink, Star, ArrowUpRight,
+  Brain, MapPin, Sparkles, Globe, Smartphone, MessageCircle,
+  type LucideIcon,
+} from "lucide-react";
 
-const projects: {
-  name: string; description: string; tech: string[]; github: string;
-  live: string | null; stars: number; featured: boolean; color: string;
-  accent: string; badge: string; badgeColor: string;
-  icon: LucideIcon; iconColor: string; iconBg: string;
-}[] = [
+type Project = {
+  name: string;
+  description: string;
+  tech: string[];
+  github: string;
+  live: string | null;
+  stars: number;
+  badge: string;
+  icon: LucideIcon;
+  gradFrom: string;
+  gradTo: string;
+  glowColor: string;
+  badgeColor: string;
+  techColor: string;
+};
+
+const projects: Project[] = [
   {
     name: "Cortexa",
     description:
       "Full-stack AI knowledge platform with RAG-powered document chat, automatic MCQ generation, and semantic search. Built with LangChain, FastAPI, Node.js, and Cloudflare R2.",
-    tech: ["React.js", "Node.js", "FastAPI", "LangChain", "MongoDB", "Cloudflare R2"],
+    tech: ["React.js", "Node.js", "FastAPI", "LangChain", "MongoDB"],
     github: "https://github.com/vednav9/cortexa",
     live: "https://cortexa-beta.vercel.app",
     stars: 0,
-    featured: true,
-    color: "from-violet-600/20 to-purple-600/10",
-    accent: "border-violet-500/30",
     badge: "Featured",
-    badgeColor: "bg-violet-500/15 text-violet-400 border-violet-500/30",
     icon: Brain,
-    iconColor: "text-violet-400",
-    iconBg: "bg-violet-500/15",
+    gradFrom: "#7c3aed",
+    gradTo: "#4f46e5",
+    glowColor: "rgba(124,58,237,0.45)",
+    badgeColor: "bg-violet-500/15 text-violet-300 border-violet-500/30",
+    techColor: "bg-violet-500/10 text-violet-300 border-violet-500/25",
   },
   {
     name: "GeoAttend",
@@ -36,14 +51,13 @@ const projects: {
     github: "https://github.com/vednav9/GeoAttend",
     live: null,
     stars: 0,
-    featured: true,
-    color: "from-emerald-600/20 to-teal-600/10",
-    accent: "border-emerald-500/30",
     badge: "Full-Stack",
-    badgeColor: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
     icon: MapPin,
-    iconColor: "text-emerald-400",
-    iconBg: "bg-emerald-500/15",
+    gradFrom: "#059669",
+    gradTo: "#0d9488",
+    glowColor: "rgba(5,150,105,0.45)",
+    badgeColor: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
+    techColor: "bg-emerald-500/10 text-emerald-300 border-emerald-500/25",
   },
   {
     name: "Intellio",
@@ -53,48 +67,45 @@ const projects: {
     github: "https://github.com/vednav9/Intellio",
     live: "https://intellio-project.vercel.app",
     stars: 0,
-    featured: true,
-    color: "from-blue-600/20 to-cyan-600/10",
-    accent: "border-blue-500/30",
     badge: "AI",
-    badgeColor: "bg-blue-500/15 text-blue-400 border-blue-500/30",
     icon: Sparkles,
-    iconColor: "text-blue-400",
-    iconBg: "bg-blue-500/15",
+    gradFrom: "#2563eb",
+    gradTo: "#0891b2",
+    glowColor: "rgba(37,99,235,0.45)",
+    badgeColor: "bg-blue-500/15 text-blue-300 border-blue-500/30",
+    techColor: "bg-blue-500/10 text-blue-300 border-blue-500/25",
   },
   {
     name: "FindEasy",
     description:
-      "Cross-platform Flutter app connecting customers with local service providers. Features Google Maps integration, Firebase auth, real-time booking management.",
+      "Cross-platform Flutter app connecting customers with local service providers. Features Google Maps integration, Firebase auth, and real-time booking management.",
     tech: ["Flutter", "Dart", "Firebase", "Google Maps"],
     github: "https://github.com/vednav9/FindEasy",
     live: null,
     stars: 1,
-    featured: false,
-    color: "from-amber-600/20 to-orange-600/10",
-    accent: "border-amber-500/30",
     badge: "Mobile",
-    badgeColor: "bg-amber-500/15 text-amber-400 border-amber-500/30",
     icon: Smartphone,
-    iconColor: "text-amber-400",
-    iconBg: "bg-amber-500/15",
+    gradFrom: "#d97706",
+    gradTo: "#ea580c",
+    glowColor: "rgba(217,119,6,0.45)",
+    badgeColor: "bg-amber-500/15 text-amber-300 border-amber-500/30",
+    techColor: "bg-amber-500/10 text-amber-300 border-amber-500/25",
   },
   {
     name: "Portfolio (This Site)",
     description:
-      "Personal portfolio built with Next.js 15, Framer Motion, and Tailwind CSS v4. Dark-first design with live GitHub & LeetCode stats fetched from a custom Node.js backend.",
+      "Personal portfolio built with Next.js 15, Framer Motion, and Tailwind CSS v4. Dark-first design with live GitHub & LeetCode stats from a custom Node.js backend.",
     tech: ["Next.js", "TypeScript", "Framer Motion", "Tailwind CSS"],
     github: "https://github.com/vednav9/vedant.dev",
     live: null,
     stars: 0,
-    featured: false,
-    color: "from-cyan-600/20 to-blue-600/10",
-    accent: "border-cyan-500/30",
     badge: "Portfolio",
-    badgeColor: "bg-cyan-500/15 text-cyan-400 border-cyan-500/30",
     icon: Globe,
-    iconColor: "text-cyan-400",
-    iconBg: "bg-cyan-500/15",
+    gradFrom: "#0891b2",
+    gradTo: "#2563eb",
+    glowColor: "rgba(8,145,178,0.45)",
+    badgeColor: "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
+    techColor: "bg-cyan-500/10 text-cyan-300 border-cyan-500/25",
   },
   {
     name: "Chattr",
@@ -104,16 +115,189 @@ const projects: {
     github: "https://github.com/vednav9/Chattr",
     live: null,
     stars: 0,
-    featured: false,
-    color: "from-pink-600/20 to-rose-600/10",
-    accent: "border-pink-500/30",
     badge: "Chat",
-    badgeColor: "bg-pink-500/15 text-pink-400 border-pink-500/30",
     icon: MessageCircle,
-    iconColor: "text-pink-400",
-    iconBg: "bg-pink-500/15",
+    gradFrom: "#db2777",
+    gradTo: "#e11d48",
+    glowColor: "rgba(219,39,119,0.45)",
+    badgeColor: "bg-pink-500/15 text-pink-300 border-pink-500/30",
+    techColor: "bg-pink-500/10 text-pink-300 border-pink-500/25",
   },
 ];
+
+function ProjectCard({ project, i, inView }: { project: Project; i: number; inView: boolean }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMouse({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, delay: 0.05 + i * 0.09, ease: [0.22, 1, 0.36, 1] }}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="group relative rounded-2xl cursor-default"
+      style={{ transform: hovered ? "translateY(-4px)" : "translateY(0)", transition: "transform 0.3s ease" }}
+    >
+      {/* Gradient border layer */}
+      <div
+        className="absolute inset-0 rounded-2xl transition-opacity duration-400"
+        style={{
+          background: `linear-gradient(135deg, ${project.gradFrom}, ${project.gradTo})`,
+          opacity: hovered ? 0.7 : 0.25,
+          padding: "1px",
+          WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+        }}
+      />
+
+      {/* Card body */}
+      <div className="relative rounded-2xl bg-[#080c14] border border-transparent flex flex-col h-full p-6 overflow-hidden">
+
+        {/* Mouse spotlight */}
+        <div
+          className="absolute inset-0 pointer-events-none rounded-2xl transition-opacity duration-300"
+          style={{
+            opacity: hovered ? 1 : 0,
+            background: `radial-gradient(350px circle at ${mouse.x}px ${mouse.y}px, ${project.glowColor.replace("0.45", "0.12")}, transparent 70%)`,
+          }}
+        />
+
+        {/* Top gradient band */}
+        <div
+          className="absolute top-0 left-0 right-0 h-px"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${project.gradFrom}80, transparent)`,
+            opacity: hovered ? 1 : 0.4,
+            transition: "opacity 0.3s",
+          }}
+        />
+
+        {/* Background watermark number */}
+        <span
+          className="absolute -top-3 right-3 text-[80px] font-black select-none pointer-events-none leading-none"
+          style={{ color: project.gradFrom, opacity: hovered ? 0.1 : 0.05, transition: "opacity 0.3s" }}
+        >
+          {String(i + 1).padStart(2, "0")}
+        </span>
+
+        {/* Icon + badge */}
+        <div className="flex items-start justify-between mb-5 relative z-10">
+          <div
+            className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300"
+            style={{
+              background: `${project.gradFrom}1a`,
+              boxShadow: hovered ? `0 0 24px -4px ${project.glowColor}` : "none",
+              transform: hovered ? "scale(1.08)" : "scale(1)",
+            }}
+          >
+            <project.icon size={22} style={{ color: project.gradFrom }} />
+          </div>
+
+          <div className="flex flex-col items-end gap-1.5 mt-0.5">
+            <span className={`px-2.5 py-0.5 text-[11px] font-semibold rounded-full border ${project.badgeColor}`}>
+              {project.badge}
+            </span>
+            {project.live && (
+              <span className="flex items-center gap-1 text-[10px] text-emerald-400 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Live
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Title */}
+        <h3
+          className="text-base font-bold mb-2 relative z-10 transition-colors duration-200"
+          style={{ color: hovered ? "#fff" : "hsl(var(--foreground))" }}
+        >
+          {project.name}
+        </h3>
+
+        {/* Description */}
+        <p className="text-muted-foreground text-xs leading-relaxed flex-1 mb-4 relative z-10">
+          {project.description}
+        </p>
+
+        {/* Tech pills */}
+        <div className="flex flex-wrap gap-1.5 mb-5 relative z-10">
+          {project.tech.map((t) => (
+            <span
+              key={t}
+              className={`px-2 py-0.5 text-[11px] font-mono rounded-md border transition-colors duration-200 ${project.techColor}`}
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center gap-2 pt-3 border-t border-white/5 relative z-10">
+          {project.stars > 0 && (
+            <span className="flex items-center gap-1 text-xs text-amber-400 mr-1">
+              <Star size={11} fill="currentColor" />
+              {project.stars}
+            </span>
+          )}
+
+          <div className="ml-auto flex items-center gap-2">
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/5 hover:bg-white/10 text-muted-foreground hover:text-foreground transition-all border border-white/8"
+            >
+              <Github size={12} />
+              Code
+            </a>
+            {project.live ? (
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all duration-200 hover:brightness-110"
+                style={{
+                  background: `${project.gradFrom}22`,
+                  borderColor: `${project.gradFrom}55`,
+                  color: project.gradFrom,
+                }}
+              >
+                <ArrowUpRight size={12} />
+                Demo
+              </a>
+            ) : (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all duration-200 hover:brightness-110"
+                style={{
+                  background: `${project.gradFrom}18`,
+                  borderColor: `${project.gradFrom}40`,
+                  color: project.gradFrom,
+                }}
+              >
+                <ExternalLink size={12} />
+                View
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export function ProjectsSection() {
   const { ref, inView } = useInView(0.1);
@@ -121,8 +305,9 @@ export function ProjectsSection() {
   const ghRepos = github.data?.repos ?? 31;
 
   return (
-    <section id="projects" className="py-24 relative">
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-600/5 rounded-full blur-3xl" />
+    <section id="projects" className="py-24 relative overflow-hidden">
+      <div className="absolute top-1/3 left-0 w-72 h-72 bg-violet-600/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-600/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6" ref={ref}>
         {/* Header */}
@@ -145,101 +330,10 @@ export function ProjectsSection() {
           </p>
         </motion.div>
 
-        {/* Featured projects (larger cards) */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+        {/* Project grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
           {projects.map((project, i) => (
-            <motion.div
-              key={project.name}
-              initial={{ opacity: 0, y: 24 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.05 + i * 0.08 }}
-              className={`group relative flex flex-col p-6 rounded-2xl border bg-gradient-to-br ${project.color} ${project.accent} hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5`}
-            >
-              {/* Top row */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <div className={`w-8 h-8 rounded-lg ${project.iconBg} flex items-center justify-center`}>
-                    <project.icon size={16} className={project.iconColor} />
-                  </div>
-                  <span className={`px-2 py-0.5 text-[11px] font-medium rounded-full border ${project.badgeColor}`}>
-                    {project.badge}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  {project.live && (
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 rounded-lg bg-background/60 hover:bg-primary/20 text-muted-foreground hover:text-primary transition-colors"
-                      aria-label="Live demo"
-                    >
-                      <ExternalLink size={14} />
-                    </a>
-                  )}
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-background/60 hover:bg-primary/20 text-muted-foreground hover:text-primary transition-colors"
-                    aria-label="GitHub"
-                  >
-                    <Github size={14} />
-                  </a>
-                </div>
-              </div>
-
-              {/* Content */}
-              <h3 className="font-bold text-base text-foreground mb-2">{project.name}</h3>
-              <p className="text-muted-foreground text-xs leading-relaxed flex-1 mb-4">
-                {project.description}
-              </p>
-
-              {/* Tech badges */}
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {project.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="px-2 py-0.5 text-[11px] font-mono rounded bg-background/60 text-muted-foreground border border-border/40"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-
-              {/* Footer */}
-              <div className="flex items-center gap-4 pt-3 border-t border-border/30">
-                {project.stars > 0 && (
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Star size={11} className="text-amber-400" />
-                    {project.stars}
-                  </div>
-                )}
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors ml-auto"
-                >
-                  <Code size={11} />
-                  View Source
-                </a>
-                {project.live && (
-                  <>
-                    <span className="text-border">·</span>
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      <ExternalLink size={11} />
-                      Live Demo
-                    </a>
-                  </>
-                )}
-              </div>
-            </motion.div>
+            <ProjectCard key={project.name} project={project} i={i} inView={inView} />
           ))}
         </div>
 
@@ -247,18 +341,18 @@ export function ProjectsSection() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          transition={{ duration: 0.5, delay: 0.65 }}
           className="text-center"
         >
           <a
             href="https://github.com/vednav9"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-border/60 bg-card/60 text-sm font-medium text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all duration-200 group"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl border border-border/60 bg-card/60 text-sm font-medium text-foreground hover:border-primary/40 hover:bg-primary/5 transition-all duration-200 group"
           >
             <Github size={16} />
             View all {ghRepos}+ repositories on GitHub
-            <ExternalLink size={13} className="opacity-50 group-hover:opacity-100 transition-opacity" />
+            <ArrowUpRight size={14} className="opacity-50 group-hover:opacity-100 transition-opacity" />
           </a>
         </motion.div>
       </div>
