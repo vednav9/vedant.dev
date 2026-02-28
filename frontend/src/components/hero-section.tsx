@@ -48,7 +48,7 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-16"
+      className="relative h-screen min-h-[600px] flex flex-col items-center overflow-hidden"
     >
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-background dark:from-[#060611] dark:via-[#09090f] dark:to-[#060611]" />
@@ -70,14 +70,17 @@ export function HeroSection() {
         }}
       />
 
-      {/* Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center pb-20">
+      {/* Navbar height spacer */}
+      <div className="h-16 shrink-0" />
+
+      {/* Content — fills remaining height and centers children */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center w-full max-w-4xl mx-auto px-4 sm:px-6 text-center">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-medium mb-8 backdrop-blur-sm"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-medium mb-4 backdrop-blur-sm"
         >
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -91,7 +94,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-4"
+          className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-3"
         >
           Vedant{" "}
           <span className="gradient-text">Navthale</span>
@@ -102,7 +105,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.35 }}
-          className="text-xl sm:text-2xl md:text-3xl font-semibold text-muted-foreground mb-6 h-10"
+          className="text-lg sm:text-xl md:text-2xl font-semibold text-muted-foreground mb-3 h-8 md:h-10"
         >
           <TypewriterText />
         </motion.h2>
@@ -112,7 +115,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto mb-5 leading-relaxed"
         >
           Transforming complex problems into scalable, elegant solutions.
           Building systems that perform at scale — from backend APIs to
@@ -124,7 +127,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.65 }}
-          className="flex flex-wrap items-center justify-center gap-4 mb-12"
+          className="flex flex-wrap items-center justify-center gap-4 mb-5"
         >
           <a
             href="#projects"
@@ -146,7 +149,7 @@ export function HeroSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex items-center justify-center gap-4"
+          className="flex items-center justify-center gap-4 mb-6"
         >
           <a
             href="https://github.com/vednav9"
@@ -182,7 +185,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.0 }}
-          className="mt-14 grid grid-cols-3 gap-2 sm:gap-4 max-w-sm mx-auto"
+          className="grid grid-cols-3 gap-2 sm:gap-6 max-w-xs mx-auto"
         >
           {[
             { value: "31+", label: "Repositories" },
@@ -197,13 +200,13 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — in normal flow, always pinned to bottom */}
       <motion.a
         href="#about"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+        className="relative z-10 mb-6 flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors shrink-0"
       >
         <span className="text-xs">Scroll</span>
         <motion.div
