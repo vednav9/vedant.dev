@@ -3,11 +3,17 @@ import "dotenv/config";
 
 const { Pool } = pg;
 
+// Strip unsupported params (e.g. channel_binding) that pg doesn't understand
+const rawUrl = process.env.DATABASE_URL ?? "";
+const dbUrl = new URL(rawUrl);
+dbUrl.searchParams.delete("channel_binding");
+const cleanUrl = dbUrl.toString();
+
+const isLocal = rawUrl.includes("localhost") || rawUrl.includes("127.0.0.1");
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes("localhost")
-    ? false
-    : { rejectUnauthorized: false },
+  connectionString: cleanUrl,
+  ssl: isLocal ? false : { rejectUnauthorized: false },
 });
 
 pool.on("error", (err) => {
