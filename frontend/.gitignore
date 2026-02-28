@@ -33,6 +33,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# env files (never commit local secrets)
+.env
+.env.local
+.env*.local
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
