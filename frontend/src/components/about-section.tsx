@@ -112,10 +112,10 @@ export function AboutSection() {
                 { label: "GitHub", value: `@vednav9 · ${ghRepos}+ repos` },
                 { label: "LeetCode", value: `@vednav9 · Rank #${lcRank.toLocaleString()}` },
               ].map((fact) => (
-                <div key={fact.label} className="flex items-center gap-3 text-sm">
+                <div key={fact.label} className="flex items-start gap-3 text-sm">
                   <span className="text-muted-foreground w-20 shrink-0">{fact.label}</span>
-                  <span className="text-border/60">—</span>
-                  <span className="text-foreground/80">{fact.value}</span>
+                  <span className="text-border/60 mt-0.5">—</span>
+                  <span className="text-foreground/80 flex-1 min-w-0 break-words">{fact.value}</span>
                 </div>
               ))}
             </motion.div>

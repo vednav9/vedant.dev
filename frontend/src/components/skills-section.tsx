@@ -134,7 +134,7 @@ export function SkillsSection() {
   const { ref, inView } = useSectionInView(0.15);
 
   return (
-    <section id="skills" className="py-24 relative">
+    <section id="skills" className="py-24 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-border to-transparent" />
       <div className="absolute top-1/3 right-0 w-80 h-80 bg-violet-600/5 rounded-full blur-3xl" />
 

@@ -91,7 +91,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-4"
+          className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-4"
         >
           Vedant{" "}
           <span className="gradient-text">Navthale</span>
@@ -182,7 +182,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.0 }}
-          className="mt-14 grid grid-cols-3 gap-4 max-w-sm mx-auto"
+          className="mt-14 grid grid-cols-3 gap-2 sm:gap-4 max-w-sm mx-auto"
         >
           {[
             { value: "31+", label: "Repositories" },

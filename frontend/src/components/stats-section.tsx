@@ -50,7 +50,7 @@ export function StatsSection() {
   const totalMax = 500;
 
   return (
-    <section id="stats" className="py-24 relative">
+      <section id="stats" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-muted/20 to-background" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-violet-600/5 rounded-full blur-3xl" />
 
@@ -108,16 +108,16 @@ export function StatsSection() {
             </div>
 
             {/* Stats grid */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-6">
               {[
                 { label: "Repositories", value: gh.repos + "+", icon: Code2, color: "text-violet-400" },
                 { label: "Followers", value: gh.followers, icon: TrendingUp, color: "text-blue-400" },
                 { label: "Stars", value: gh.stars, icon: Star, color: "text-amber-400" },
               ].map((stat) => (
-                <div key={stat.label} className="text-center p-4 rounded-xl bg-secondary/50 border border-border/30">
-                  <stat.icon size={16} className={`${stat.color} mx-auto mb-2`} />
-                  <div className="text-xl font-bold text-foreground">{stat.value}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{stat.label}</div>
+                <div key={stat.label} className="text-center p-2 sm:p-4 rounded-xl bg-secondary/50 border border-border/30">
+                  <stat.icon size={14} className={`${stat.color} mx-auto mb-1.5`} />
+                  <div className="text-base sm:text-xl font-bold text-foreground">{stat.value}</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5 leading-tight">{stat.label}</div>
                 </div>
               ))}
             </div>

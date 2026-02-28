@@ -48,7 +48,7 @@ export function ExperienceSection() {
   ];
 
   return (
-    <section id="experience" className="py-24 relative">
+    <section id="experience" className="py-24 relative overflow-hidden">
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl -translate-y-1/2" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6" ref={ref}>
