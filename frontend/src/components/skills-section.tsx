@@ -35,37 +35,37 @@ const skillGroups: SkillGroup[] = [
   {
     label: "Languages",
     icon: Keyboard,
-    accent: "#f59e0b",
+    accent: "#F59E0B",
     skills: ["JavaScript", "TypeScript", "SQL", "Python", "Java", "C++", "HTML/CSS"],
   },
   {
     label: "Backend",
     icon: Server,
-    accent: "#6366f1",
+    accent: "#7C3AED",
     skills: ["Node.js", "Express.js", "Spring Boot", "REST APIs", "GraphQL", "JWT / Auth", "WebSockets"],
   },
   {
     label: "Frontend",
     icon: Layout,
-    accent: "#3b82f6",
+    accent: "#3B82F6",
     skills: ["React", "Next.js", "Redux", "Tailwind CSS", "Framer Motion"],
   },
   {
     label: "Databases & Cloud",
     icon: Database,
-    accent: "#10b981",
+    accent: "#10B981",
     skills: ["PostgreSQL", "MongoDB", "MySQL", "Redis", "Firebase", "AWS (EC2, S3, Lambda)", "Cloudflare R2"],
   },
   {
     label: "DevOps & Tools",
     icon: Wrench,
-    accent: "#0891b2",
+    accent: "#06B6D4",
     skills: ["Git / GitHub", "Docker", "Vercel", "Linux / Bash", "CI/CD", "Postman", "VS Code"],
   },
   {
     label: "CS Fundamentals",
     icon: Lightbulb,
-    accent: "#ec4899",
+    accent: "#EC4899",
     skills: ["DSA", "System Design", "OOP", "DBMS", "OS", "Computer Networks", "Microservices"],
   },
 ];
