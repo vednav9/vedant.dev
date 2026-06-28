@@ -1,10 +1,10 @@
-# vedant.dev — Portfolio Website
+# Vedant Navthale — Portfolio Website
 
 A **production-grade, full-stack portfolio website** built to showcase my engineering skills, projects, experience, and real-time coding activity using modern web technologies and clean UI/UX principles.
 
 This is not a static portfolio — it is a **live engineering dashboard** powered by real data from GitHub and LeetCode.
 
-🌐 **Live Website**: https://vedant.dev  \
+🌐 **Live Website**: https://vedantnavthale.vercel.app  \
 👤 **Author**: Vedant Navthale
 
 ---
@@ -34,7 +34,7 @@ The goal is simple:
 ## 🧠 Features
 
 ### 🎨 UI / UX
-- Dark mode **by default** (with light mode toggle)
+- Light mode **by default** (with dark mode toggle)
 - Modern, minimal, product-inspired design
 - Smooth animations and micro-interactions
 - Fully responsive (mobile-first)
