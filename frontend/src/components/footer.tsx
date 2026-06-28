@@ -3,6 +3,12 @@
 import { Github, Linkedin, ExternalLink, Download, Mail } from "lucide-react";
 import { site } from "@/data/site";
 
+const rawUrl = site.resumeUrl ?? "";
+const driveMatch = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+const downloadUrl = driveMatch
+  ? `https://drive.google.com/uc?export=download&id=${driveMatch[1]}`
+  : rawUrl;
+
 export function Footer() {
   return (
     <footer className="border-t border-border/50 py-10 mt-4">
@@ -13,14 +19,13 @@ export function Footer() {
               {site.name}
             </span>
             <span>·</span>
-            <span>Built with Next.js &amp; Framer Motion</span>
+            <span>Built with Next.js, TypeScript, Tailwind CSS, &amp; Framer Motion.</span>
           </div>
 
           <div className="flex items-center gap-2">
             <a
-              href={site.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={downloadUrl}
+              download
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors"
             >
               <Download size={13} />

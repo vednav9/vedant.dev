@@ -117,7 +117,7 @@ export function ContactSection() {
           </h2>
           <div className="w-12 h-0.5 bg-gradient-to-r from-violet-600 to-blue-500 rounded-full mx-auto mb-6" />
           <p className="text-muted-foreground max-w-lg mx-auto text-sm leading-relaxed">
-            Open to full-time roles and collaboration. If you&apos;re building something meaningful, I&apos;d glad to be part of it.
+            Open to full-time Software Engineering opportunities &amp; meaningful collaborations.
           </p>
         </motion.div>
 

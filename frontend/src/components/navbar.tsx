@@ -7,6 +7,12 @@ import { ThemeToggle } from "./theme-toggle";
 import { Menu, X, Download } from "lucide-react";
 import { site } from "@/data/site";
 
+const rawUrl = site.resumeUrl ?? "";
+const driveMatch = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+const downloadUrl = driveMatch
+  ? `https://drive.google.com/uc?export=download&id=${driveMatch[1]}`
+  : rawUrl;
+
 const navLinks = [
   { href: "#about", label: "About" },
   { href: "#experience", label: "Experience" },
@@ -115,9 +121,8 @@ export function Navbar() {
           <div className="flex items-center gap-2.5">
             <ThemeToggle />
             <a
-              href={site.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={downloadUrl}
+              download
               className="hidden lg:inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity shadow-sm shadow-primary/20"
             >
               <Download size={14} />
@@ -166,9 +171,8 @@ export function Navbar() {
               );
             })}
             <a
-              href={site.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={downloadUrl}
+              download
               onClick={() => setMobileOpen(false)}
               className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
             >
