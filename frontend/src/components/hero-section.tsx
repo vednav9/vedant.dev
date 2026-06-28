@@ -86,13 +86,13 @@ function HeroAvatar() {
   );
 }
 
-type Phase = "measuring" | "centered" | "revealed";
+type Phase = "hidden" | "centered" | "revealed";
 
 export function HeroSection() {
   const reduce = useReducedMotion();
   const avatarRef = useRef<HTMLDivElement>(null);
-  const offsetRef = useRef(0);
-  const [phase, setPhase] = useState<Phase>(reduce ? "revealed" : "measuring");
+  const [phase, setPhase] = useState<Phase>(reduce ? "revealed" : "hidden");
+  const [offset, setOffset] = useState(0);
   const { github, leetcode } = useStats();
   const ghRepos = github.data?.repos ?? 40;
   const InFollowers = 2.6;
@@ -101,18 +101,31 @@ export function HeroSection() {
   useEffect(() => {
     if (reduce) return;
 
-    const frame = setTimeout(() => {
-      const el = avatarRef.current;
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        offsetRef.current =
-          window.innerWidth / 2 - (rect.left + rect.width / 2);
-      }
-      setPhase("centered");
-      setTimeout(() => setPhase("revealed"), 1300);
-    }, 50);
+    // Wait for 2 animation frames so the grid is fully laid out and painted
+    let raf1: number;
+    let raf2: number;
+    let t: ReturnType<typeof setTimeout>;
 
-    return () => clearTimeout(frame);
+    raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        const el = avatarRef.current;
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          const avatarCenterX = rect.left + rect.width / 2;
+          const screenCenterX = window.innerWidth / 2;
+          // Positive value = needs to move right, negative = left
+          setOffset(screenCenterX - avatarCenterX);
+        }
+        setPhase("centered");
+        t = setTimeout(() => setPhase("revealed"), 1400);
+      });
+    });
+
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      clearTimeout(t);
+    };
   }, [reduce]);
 
   const rise = (y = 20, delay = 0, duration = 0.6) =>
@@ -167,7 +180,7 @@ export function HeroSection() {
               opacity: textVisible ? 1 : 0,
               x: textVisible ? 0 : -30,
             }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as const }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
             className="order-2 lg:order-1 text-center lg:text-left"
             style={{ pointerEvents: textVisible ? "auto" : "none" }}
           >
@@ -207,8 +220,7 @@ export function HeroSection() {
               className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto lg:mx-0 mb-6 leading-relaxed"
             >
               Transforming complex problems into scalable, elegant solutions.
-              Building systems that perform at scale — from backend APIs to
-              full-stack SaaS products.
+              Building systems that perform at scale.
             </motion.p>
 
             <motion.div
@@ -304,14 +316,20 @@ export function HeroSection() {
             <motion.div
               initial={false}
               animate={{
-                x: phase === "centered" ? offsetRef.current : 0,
-                opacity: phase === "measuring" ? 0 : 1,
-                scale: phase === "measuring" ? 0.7 : 1,
+                // "hidden" → invisible at natural grid position
+                // "centered" → visible, shifted exactly to screen center
+                // "revealed" → back to natural grid position (x: 0)
+                x: phase === "centered" ? offset : 0,
+                opacity: phase === "hidden" ? 0 : 1,
+                scale: phase === "hidden" ? 0.85 : 1,
               }}
               transition={{
-                x: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const },
-                opacity: { duration: 0.4 },
-                scale: { duration: 0.5, ease: "easeOut" },
+                x: {
+                  duration: phase === "centered" ? 0 : 0.95,
+                  ease: [0.22, 1, 0.36, 1],
+                },
+                opacity: { duration: 0.35 },
+                scale: { duration: 0.45, ease: "easeOut" },
               }}
             >
               <div className="animate-float">
@@ -323,7 +341,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator — absolute pinned to bottom center, always visible */}
+      {/* Scroll indicator */}
       {textVisible && (
         <motion.a
           href="#about"
@@ -338,11 +356,7 @@ export function HeroSection() {
               <motion.div
                 className="w-1.5 h-1.5 rounded-full bg-foreground/40 group-hover:bg-primary transition-colors duration-200"
                 animate={reduce ? undefined : { y: [0, 16, 0] }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
               />
             </div>
             <span className="text-xs text-foreground/40 group-hover:text-primary font-medium tracking-wide transition-colors duration-200">
