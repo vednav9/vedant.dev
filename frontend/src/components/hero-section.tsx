@@ -56,11 +56,13 @@ function TypewriterText() {
   );
 }
 
-function HeroAvatar() {
+// ─── avatarRef moved HERE — on the actual image wrapper, not the column ───
+function HeroAvatar({ innerRef }: { innerRef: React.RefObject<HTMLDivElement> }) {
   const [failed, setFailed] = useState(false);
   if (failed) return null;
   return (
-    <div className="relative inline-block">
+    // 👇 ref is now on the element that visually IS the avatar
+    <div ref={innerRef} className="relative inline-block">
       <div
         className="absolute -inset-4 rounded-full opacity-50 blur-lg animate-spin-slow"
         style={{
@@ -90,6 +92,7 @@ type Phase = "hidden" | "centered" | "revealed";
 
 export function HeroSection() {
   const reduce = useReducedMotion();
+  // 👇 ref now points to the actual avatar element via prop
   const avatarRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<Phase>(reduce ? "revealed" : "hidden");
   const [offset, setOffset] = useState(0);
@@ -101,7 +104,6 @@ export function HeroSection() {
   useEffect(() => {
     if (reduce) return;
 
-    // Wait for 2 animation frames so the grid is fully laid out and painted
     let raf1: number;
     let raf2: number;
     let t: ReturnType<typeof setTimeout>;
@@ -111,9 +113,9 @@ export function HeroSection() {
         const el = avatarRef.current;
         if (el) {
           const rect = el.getBoundingClientRect();
+          // rect is now the actual avatar circle, not the column wrapper
           const avatarCenterX = rect.left + rect.width / 2;
           const screenCenterX = window.innerWidth / 2;
-          // Positive value = needs to move right, negative = left
           setOffset(screenCenterX - avatarCenterX);
         }
         setPhase("centered");
@@ -184,7 +186,6 @@ export function HeroSection() {
             className="order-2 lg:order-1 text-center lg:text-left"
             style={{ pointerEvents: textVisible ? "auto" : "none" }}
           >
-            {/* Badges */}
             <motion.div
               {...rise(20, 0.1)}
               className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-4 mt-6"
@@ -245,48 +246,16 @@ export function HeroSection() {
               </a>
             </motion.div>
 
-            {/* Social icons */}
             <motion.div
               {...rise(0, 0.8)}
               className="flex items-center justify-center lg:justify-start gap-3 mb-6"
             >
-              <a
-                href={`mailto:${site.email}`}
-                className="p-2.5 rounded-xl border border-border/50 bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-red-500 hover:border-red-500/40 transition-all duration-200 hover:-translate-y-0.5"
-                aria-label="Email"
-              >
-                <Mail size={18} />
-              </a>
-              <a
-                href={site.socials.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-xl border border-border/50 bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all duration-200 hover:-translate-y-0.5"
-                aria-label="GitHub"
-              >
-                <Github size={18} />
-              </a>
-              <a
-                href={site.socials.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-xl border border-border/50 bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-[#0077b5] hover:border-[#0077b5]/40 transition-all duration-200 hover:-translate-y-0.5"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={18} />
-              </a>
-              <a
-                href={site.socials.leetcode}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-xl border border-border/50 bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-[#ffa116] hover:border-[#ffa116]/40 transition-all duration-200 hover:-translate-y-0.5"
-                aria-label="LeetCode"
-              >
-                <CodeXml size={18} />
-              </a>
+              <a href={`mailto:${site.email}`} className="p-2.5 rounded-xl border border-border/50 bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-red-500 hover:border-red-500/40 transition-all duration-200 hover:-translate-y-0.5" aria-label="Email"><Mail size={18} /></a>
+              <a href={site.socials.github} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-xl border border-border/50 bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all duration-200 hover:-translate-y-0.5" aria-label="GitHub"><Github size={18} /></a>
+              <a href={site.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-xl border border-border/50 bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-[#0077b5] hover:border-[#0077b5]/40 transition-all duration-200 hover:-translate-y-0.5" aria-label="LinkedIn"><Linkedin size={18} /></a>
+              <a href={site.socials.leetcode} target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-xl border border-border/50 bg-background/40 backdrop-blur-sm text-muted-foreground hover:text-[#ffa116] hover:border-[#ffa116]/40 transition-all duration-200 hover:-translate-y-0.5" aria-label="LeetCode"><CodeXml size={18} /></a>
             </motion.div>
 
-            {/* Stats */}
             <motion.div
               {...rise(20, 1.0)}
               className="grid grid-cols-3 gap-3 sm:gap-6 max-w-sm mx-auto lg:mx-0"
@@ -308,17 +277,11 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* RIGHT — avatar */}
-          <div
-            ref={avatarRef}
-            className="order-1 lg:order-2 flex justify-center lg:justify-end"
-          >
+          {/* RIGHT — avatar column (NO ref here anymore) */}
+          <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
             <motion.div
               initial={false}
               animate={{
-                // "hidden" → invisible at natural grid position
-                // "centered" → visible, shifted exactly to screen center
-                // "revealed" → back to natural grid position (x: 0)
                 x: phase === "centered" ? offset : 0,
                 opacity: phase === "hidden" ? 0 : 1,
                 scale: phase === "hidden" ? 0.85 : 1,
@@ -333,7 +296,8 @@ export function HeroSection() {
               }}
             >
               <div className="animate-float">
-                <HeroAvatar />
+                {/* 👇 ref passed as prop into HeroAvatar, sits on the image wrapper */}
+                <HeroAvatar innerRef={avatarRef} />
               </div>
             </motion.div>
           </div>
@@ -341,7 +305,6 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
       {textVisible && (
         <motion.a
           href="#about"
