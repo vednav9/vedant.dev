@@ -1,0 +1,426 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-space-grotesk), var(--font-geist-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.75rem;
+  /* Light-first: clean, soft near-white with a hint of cool slate.
+     Tuned for recruiter readability (AA contrast) and print-friendliness. */
+  --background: oklch(0.985 0.003 255);
+  --foreground: oklch(0.16 0.012 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0.012 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.012 260);
+  --primary: oklch(0.52 0.23 274);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.96 0.005 260);
+  --secondary-foreground: oklch(0.28 0.015 260);
+  --muted: oklch(0.955 0.006 260);
+  --muted-foreground: oklch(0.46 0.02 260);
+  --accent: oklch(0.95 0.01 274);
+  --accent-foreground: oklch(0.28 0.015 260);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0.008 260);
+  --input: oklch(0.9 0.008 260);
+  --ring: oklch(0.52 0.23 274);
+  --chart-1: oklch(0.55 0.22 264);
+  --chart-2: oklch(0.6 0.18 162);
+  --chart-3: oklch(0.7 0.18 84);
+  --chart-4: oklch(0.65 0.2 303);
+  --chart-5: oklch(0.64 0.24 16);
+  --sidebar: oklch(0.97 0.004 240);
+  --sidebar-foreground: oklch(0.12 0.01 240);
+  --sidebar-primary: oklch(0.55 0.22 264);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.94 0.005 240);
+  --sidebar-accent-foreground: oklch(0.25 0.01 240);
+  --sidebar-border: oklch(0.88 0.008 240);
+  --sidebar-ring: oklch(0.55 0.22 264);
+
+  /* Portfolio custom */
+  --accent-violet: #7c3aed;
+  --accent-blue: #3b82f6;
+  --accent-cyan: #06b6d4;
+  --accent-emerald: #10b981;
+}
+
+.dark {
+  --background: oklch(0.09 0.008 240);
+  --foreground: oklch(0.95 0.005 240);
+  --card: oklch(0.13 0.01 240);
+  --card-foreground: oklch(0.95 0.005 240);
+  --popover: oklch(0.13 0.01 240);
+  --popover-foreground: oklch(0.95 0.005 240);
+  --primary: oklch(0.65 0.22 264);
+  --primary-foreground: oklch(0.09 0.008 240);
+  --secondary: oklch(0.18 0.012 240);
+  --secondary-foreground: oklch(0.95 0.005 240);
+  --muted: oklch(0.18 0.012 240);
+  --muted-foreground: oklch(0.6 0.015 240);
+  --accent: oklch(0.18 0.012 240);
+  --accent-foreground: oklch(0.95 0.005 240);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.65 0.22 264);
+  --chart-1: oklch(0.65 0.22 264);
+  --chart-2: oklch(0.7 0.18 162);
+  --chart-3: oklch(0.75 0.18 84);
+  --chart-4: oklch(0.7 0.2 303);
+  --chart-5: oklch(0.7 0.24 16);
+  --sidebar: oklch(0.13 0.01 240);
+  --sidebar-foreground: oklch(0.95 0.005 240);
+  --sidebar-primary: oklch(0.65 0.22 264);
+  --sidebar-primary-foreground: oklch(0.09 0.008 240);
+  --sidebar-accent: oklch(0.18 0.012 240);
+  --sidebar-accent-foreground: oklch(0.95 0.005 240);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(0.65 0.22 264);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    /* Offset anchor jumps so content isn't hidden behind the fixed navbar */
+    scroll-padding-top: 5rem;
+  }
+  /* Display typeface for headings — the redesign's distinct voice */
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  /* Visible, consistent keyboard focus across the whole site */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.52 0.23 274 / 0.35);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.52 0.23 274 / 0.6);
+}
+
+/* Gradient text — deeper stops in light mode for AA contrast, vivid in dark.
+   Animated shimmer (kinetic typography) via moving background-position. */
+.gradient-text {
+  background: linear-gradient(
+    100deg,
+    #6d28d9 0%,
+    #4f46e5 30%,
+    #2563eb 55%,
+    #6d28d9 80%,
+    #4f46e5 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+.dark .gradient-text {
+  background: linear-gradient(
+    100deg,
+    #a78bfa 0%,
+    #818cf8 30%,
+    #38bdf8 55%,
+    #a78bfa 80%,
+    #818cf8 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-warm {
+  background: linear-gradient(135deg, #d97706 0%, #dc2626 50%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass card — light-mode-safe opacity (engine rule: bg-white/80, not /5).
+   Glass-in on hover only — no reverse transition on hover-out. */
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  transition: backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+}
+.glass-card:hover {
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+
+.dark .glass-card {
+  background: oklch(1 0 0 / 0.04);
+  border: 1px solid oklch(1 0 0 / 0.1);
+}
+
+/* Visible card borders — scoped to section content only */
+section .card-shine,
+section .glass-card,
+section .border.rounded-2xl,
+section .border.rounded-xl {
+  border-color: rgba(15, 23, 42, 0.22);
+}
+.dark section .card-shine,
+.dark section .glass-card,
+.dark section .border.rounded-2xl,
+.dark section .border.rounded-xl {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Glow effects */
+.glow-violet {
+  box-shadow: 0 0 40px oklch(0.55 0.22 264 / 0.2);
+}
+.glow-blue {
+  box-shadow: 0 0 40px oklch(0.55 0.2 240 / 0.2);
+}
+
+/* Noise texture overlay */
+.noise-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.04;
+}
+
+/* Section fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Typing cursor blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink {
+  animation: blink 1.2s step-end infinite;
+}
+
+/* Gradient border */
+.gradient-border {
+  position: relative;
+  border-radius: 0.75rem;
+}
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #7c3aed, #3b82f6, #06b6d4);
+  z-index: -1;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Animation engine — premium motion utilities (all gated by reduced-motion)
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Shimmer for gradient text / gradient fills */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+/* Sparkle twinkle — grows big then small, with a little spin */
+@keyframes twinkle {
+  0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1) rotate(90deg); opacity: var(--sparkle-opacity, 1); }
+}
+
+/* Aurora blobs drifting around the hero */
+@keyframes aurora {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  33%  { transform: translate3d(4%, -3%, 0) scale(1.12); }
+  66%  { transform: translate3d(-3%, 4%, 0) scale(0.94); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+.animate-aurora { animation: aurora 16s ease-in-out infinite; }
+.animate-aurora-slow { animation: aurora 22s ease-in-out infinite reverse; }
+
+/* Shine sweep across a card on hover — one-directional (no reverse on leave) */
+.card-shine { position: relative; overflow: hidden; }
+.card-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.35) 48%,
+    transparent 66%
+  );
+  transform: translateX(-120%);
+  pointer-events: none;
+  z-index: 5;
+  transition: none;
+}
+.card-shine:hover::after {
+  transform: translateX(120%);
+  transition: transform 0.7s ease;
+}
+.dark .card-shine::after {
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.12) 48%,
+    transparent 66%
+  );
+}
+
+/* Gentle float */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float { animation: float-y 5s ease-in-out infinite; }
+
+/* Glow pulse for primary CTAs / badges */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.35); }
+  50% { box-shadow: 0 0 28px 4px rgba(124, 58, 237, 0.45); }
+}
+.animate-glow { animation: glow-pulse 3s ease-in-out infinite; }
+
+/* Slow conic spin for rotating gradient rings */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: spin-slow 8s linear infinite; }
+
+/* Marquee (infinite horizontal scroll) */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+  will-change: transform;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* Shimmer sweep line for section underlines */
+@keyframes shimmer-x {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Hide Next.js error overlay portal */
+nextjs-portal {
+  display: none !important;
+}
+
+/* Respect reduced-motion: kill non-essential animation/transition globally.
+   Framer Motion is additionally guarded via useReducedMotion in components. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .cursor-blink,
+  .animate-pulse,
+  .animate-ping,
+  .animate-gradient,
+  .gradient-text,
+  .animate-aurora,
+  .animate-aurora-slow,
+  .animate-float,
+  .animate-glow,
+  .animate-spin-slow,
+  .animate-marquee,
+  .sparkle {
+    animation: none !important;
+  }
+  .card-shine::after {
+    display: none !important;
+  }
+}
