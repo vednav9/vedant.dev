@@ -7,7 +7,6 @@ import {
   BadgeCheck,
   Maximize2,
   ExternalLink,
-  Download,
   ShieldCheck,
 } from "lucide-react";
 import {
@@ -176,14 +175,6 @@ export function CertificationsSection() {
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  <a
-                    href={active.image}
-                    download
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-medium border border-border/60 bg-card hover:border-primary/40 hover:bg-primary/5 text-foreground transition-colors duration-200"
-                  >
-                    <Download size={14} />
-                    Download
-                  </a>
                   {active.verifyUrl && (
                     <a
                       href={active.verifyUrl}
