@@ -67,7 +67,14 @@ router.get("/leetcode", async (_req, res) => {
   await respondWithStats("leetcode", fetchLeetCodeStats, res);
 });
 
+router.get("/linkedin", (_req, res) => {
+  const followers = parseFloat(process.env.LINKEDIN_FOLLOWERS || "2.6");
+  res.json({ data: { followers }, source: "env" });
+});
+
 router.get("/all", async (_req, res) => {
+  const linkedinFollowers = parseFloat(process.env.LINKEDIN_FOLLOWERS || "2.6");
+
   const [github, leetcode] = await Promise.allSettled([
     (async () => {
       const cached = await cache.get("github").catch(() => null);
@@ -88,6 +95,7 @@ router.get("/all", async (_req, res) => {
   res.json({
     github: github.status === "fulfilled" ? github.value : { error: github.reason?.message },
     leetcode: leetcode.status === "fulfilled" ? leetcode.value : { error: leetcode.reason?.message },
+    linkedin: { data: { followers: linkedinFollowers }, source: "env" },
   });
 });
 
