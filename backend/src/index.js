@@ -24,12 +24,23 @@ const allowedOrigins = [
   FRONTEND_URL,
 ].filter(Boolean);
 
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin)) return true;
+
+  try {
+    const hostname = new URL(origin).hostname;
+    return hostname.endsWith(".vercel.app") || hostname.endsWith(".vercel.dev");
+  } catch {
+    return false;
+  }
+}
+
 // ── Middleware ─────────────────────────────────────────────────────────────
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
+      if (isAllowedOrigin(origin)) return callback(null, true);
       callback(new Error(`CORS: origin ${origin} not allowed`));
     },
     methods: ["GET", "POST", "OPTIONS"],
