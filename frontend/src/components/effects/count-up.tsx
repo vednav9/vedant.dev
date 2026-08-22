@@ -31,6 +31,9 @@ export function CountUp({
       return;
     }
 
+    // Reset so animation re-runs when value changes (e.g. live stats arriving after fallback)
+    started.current = false;
+
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
