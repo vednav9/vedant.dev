@@ -96,9 +96,9 @@ export function HeroSection() {
   const avatarRef = useRef<HTMLDivElement>(null);
   const [phase, setPhase] = useState<Phase>(reduce ? "revealed" : "hidden");
   const [offset, setOffset] = useState(0);
-  const { github, leetcode } = useStats();
+  const { github, leetcode, linkedin } = useStats();
   const ghRepos = github.data?.repos ?? 40;
-  const InFollowers = 2.6;
+  const InFollowers = linkedin.data?.followers ?? 2.6;
   const lcTotal = leetcode.data?.total ?? 447;
 
   useEffect(() => {
