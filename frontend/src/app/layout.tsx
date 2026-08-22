@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { StatsProvider } from "@/contexts/stats-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -79,7 +80,9 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange={false}
         >
-          {children}
+          <StatsProvider>
+            {children}
+          </StatsProvider>
         </ThemeProvider>
       </body>
     </html>
