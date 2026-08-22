@@ -14,11 +14,12 @@ import {
 export function AboutSection() {
   const { ref, inView } = useInView(0.1);
   const reduce = useReducedMotion();
-  const { github, leetcode } = useStats();
+  const { github, leetcode, linkedin } = useStats();
 
   const lcTotal = leetcode.data?.total ?? 447;
   const ghRepos = github.data?.repos ?? 40;
   const lcRank  = leetcode.data?.rank ?? 246416;
+  const inFollowers = linkedin.data?.followers ?? 2.6;
 
   const rise = (delay = 0) =>
     reduce
@@ -71,7 +72,7 @@ export function AboutSection() {
     { icon: Code2,    value: ghRepos, suffix: "+", label: "Repos",      color: "text-violet-500",  bg: "bg-violet-500/10" },
     { icon: Trophy,   value: lcTotal, suffix: "+", label: "LC Solved",  color: "text-blue-500",    bg: "bg-blue-500/10" },
     { icon: Target,   value: lcRank,  suffix: "",  label: "LC Rank",    color: "text-emerald-500", bg: "bg-emerald-500/10", prefix: "#" },
-    { icon: Linkedin, value: 2.6,     suffix: "k", label: "LinkedIn",   color: "text-[#0077b5]",   bg: "bg-[#0077b5]/10" },
+    { icon: Linkedin, value: inFollowers, suffix: "k", label: "LinkedIn",   color: "text-[#0077b5]",   bg: "bg-[#0077b5]/10" },
   ];
 
   return (
