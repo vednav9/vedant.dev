@@ -6,11 +6,13 @@ import statsRouter from "./routes/stats.js";
 import contactRouter from "./routes/contact.js";
 
 // ── Startup validation ────────────────────────────────────────────────────
+// On Vercel (serverless) process.exit would crash the cold start — throw instead.
 const required = ["DATABASE_URL"];
 const missing = required.filter((k) => !process.env[k]);
 if (missing.length) {
-  console.error(`[startup] Missing required env vars: ${missing.join(", ")}`);
-  process.exit(1);
+  const msg = `[startup] Missing required env vars: ${missing.join(", ")}`;
+  console.error(msg);
+  if (process.env.NODE_ENV !== "production") process.exit(1);
 }
 
 const app = express();
@@ -29,7 +31,9 @@ function isAllowedOrigin(origin) {
   if (allowedOrigins.includes(origin)) return true;
 
   try {
-    const hostname = new URL(origin).hostname;
+    const { hostname } = new URL(origin);
+    // Allow any localhost port (dev servers can start on any port)
+    if (hostname === "localhost" || hostname === "127.0.0.1") return true;
     return hostname.endsWith(".vercel.app") || hostname.endsWith(".vercel.dev");
   } catch {
     return false;
@@ -86,8 +90,14 @@ app.use((err, _req, res, _next) => {
 });
 
 // ── Start ──────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`\n  vedant.dev backend running on http://localhost:${PORT}`);
-  console.log(`  Health: http://localhost:${PORT}/health`);
-  console.log(`  Stats:  http://localhost:${PORT}/api/stats/all\n`);
-});
+// Vercel imports this file as a module and uses `export default app`.
+// Local dev still needs app.listen().
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`\n  vedant.dev backend running on http://localhost:${PORT}`);
+    console.log(`  Health: http://localhost:${PORT}/health`);
+    console.log(`  Stats:  http://localhost:${PORT}/api/stats/all\n`);
+  });
+}
+
+export default app;
